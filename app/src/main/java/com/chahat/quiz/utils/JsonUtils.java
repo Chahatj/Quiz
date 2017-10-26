@@ -68,15 +68,15 @@ public class JsonUtils {
                 questionModel.setCategory(jsonObject.getString("category"));
                 questionModel.setType(jsonObject.getString("type"));
                 questionModel.setDifficulty(jsonObject.getString("difficulty"));
-                questionModel.setQuestion(jsonObject.getString("question"));
-                questionModel.setCorrectAnswer(jsonObject.getString("correct_answer"));
+                questionModel.setQuestion(jsonObject.getString("question").replaceAll("&quot;", "\"").replaceAll("&#039;", "'"));
+                questionModel.setCorrectAnswer(jsonObject.getString("correct_answer").replaceAll("&quot;", "\"").replaceAll("&#039;", "'"));
 
                 JSONArray jsonArray1 = jsonObject.getJSONArray("incorrect_answers");
 
                 String[] strings = new String[jsonArray1.length()];
 
                 for (int j=0;j<jsonArray1.length();j++){
-                    strings[j] = jsonArray1.optString(j);
+                    strings[j] = jsonArray1.getString(j).replaceAll("&quot;", "\"").replaceAll("&#039;", "'");
                 }
                 questionModel.setIncorrectAnswer(strings);
 

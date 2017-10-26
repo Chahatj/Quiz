@@ -19,6 +19,16 @@ public class QuestionModel implements Serializable {
     private String givenAnswer = null;
     private List<String> optionList;
 
+    private int checkedId= -1;
+
+    public int getCheckedId() {
+        return checkedId;
+    }
+
+    public void setCheckedId(int checkedId) {
+        this.checkedId = checkedId;
+    }
+
     public List<String> getOptionList() {
         return optionList;
     }

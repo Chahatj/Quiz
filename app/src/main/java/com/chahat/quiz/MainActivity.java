@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.chahat.quiz.Object.Category;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.editTextQuestion) EditText editTextQuestion;
     @BindView(R.id.spinnerDifficulty) Spinner spinnerDifficulty;
     @BindView(R.id.spinnerType) Spinner spinnerType;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(this,android.R.layout.simple_spinner_dropdown_item,data);
         spinnerCategory.setAdapter(adapter);
         buttonTakeQuiz.setEnabled(true);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

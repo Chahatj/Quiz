@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.chahat.quiz.Object.Category;
@@ -36,7 +38,11 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
     private final int LOADER_ID = 2;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.buttonSubmit) Button buttonSubmit;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     private QuestionAdapter questionAdapter;
+    @BindView(R.id.emptyView)
+    LinearLayout emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +80,7 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             protected void onStartLoading() {
                 super.onStartLoading();
+                showProgress();
                 if(mList!=null){
                     deliverResult(mList);
                 }else {
@@ -108,7 +115,12 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<QuestionModel>> loader, List<QuestionModel> data) {
-        questionAdapter.setQuestionList(data);
+        if (data!=null && data.size()>0){
+            questionAdapter.setQuestionList(data);
+            showData();
+        }else {
+            showEmptyView();
+        }
     }
 
     @Override
@@ -124,5 +136,26 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra("QuestionList", (Serializable) questionList);
         startActivity(intent);
         finish();
+     }
+
+     private void showProgress(){
+         progressBar.setVisibility(View.VISIBLE);
+         recyclerView.setVisibility(View.INVISIBLE);
+         buttonSubmit.setEnabled(false);
+         emptyView.setVisibility(View.GONE);
+     }
+
+     private void showData(){
+         progressBar.setVisibility(View.GONE);
+         recyclerView.setVisibility(View.VISIBLE);
+         buttonSubmit.setEnabled(true);
+         emptyView.setVisibility(View.GONE);
+     }
+
+     private void showEmptyView(){
+         progressBar.setVisibility(View.GONE);
+         recyclerView.setVisibility(View.GONE);
+         buttonSubmit.setEnabled(false);
+         emptyView.setVisibility(View.VISIBLE);
      }
 }

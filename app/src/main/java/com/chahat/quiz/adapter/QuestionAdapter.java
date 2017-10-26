@@ -52,7 +52,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        QuestionModel questionModel = questionList.get(position);
+        final QuestionModel questionModel = questionList.get(position);
 
         if (holder.getItemViewType()==0){
 
@@ -62,11 +62,40 @@ public class QuestionAdapter extends RecyclerView.Adapter {
             ((McTypeViewHolder) holder).radioOption3.setText(questionModel.getOptionList().get(2));
             ((McTypeViewHolder) holder).radioOption4.setText(questionModel.getOptionList().get(3));
 
+            ((McTypeViewHolder) holder).radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                    questionModel.setCheckedId(radioGroup.getCheckedRadioButtonId());
+                }
+            });
+
+            ((McTypeViewHolder) holder).radioGroup.check(questionModel.getCheckedId());
+
+            if (questionModel.getCheckedId()!=-1){
+                String ans = ((RadioButton) holder.itemView.findViewById(((McTypeViewHolder) holder).radioGroup.getCheckedRadioButtonId())).getText().toString();
+                questionModel.setGivenAnswer(ans);
+            }
+
+
         }else {
 
             ((TF_TypeViewHolder)holder).TF_tvQuestion.setText(questionModel.getQuestion());
             ((TF_TypeViewHolder)holder).TF_radioOption1.setText(questionModel.getOptionList().get(0));
             ((TF_TypeViewHolder)holder).TF_radioOption2.setText(questionModel.getOptionList().get(1));
+
+            ((TF_TypeViewHolder)holder).TF_radioOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                    questionModel.setCheckedId(radioGroup.getCheckedRadioButtonId());
+                }
+            });
+            ((TF_TypeViewHolder)holder).TF_radioOptions.check(questionModel.getCheckedId());
+
+            if (questionModel.getCheckedId()!=-1){
+                String ans = ((RadioButton) holder.itemView.findViewById(((TF_TypeViewHolder) holder).TF_radioOptions.getCheckedRadioButtonId())).getText().toString();
+                questionModel.setGivenAnswer(ans);
+            }
+
         }
 
     }
@@ -119,7 +148,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
 
             ButterKnife.bind(this,itemView);
 
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            /*radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                     QuestionModel questionModel = questionList.get(getAdapterPosition());
@@ -127,7 +156,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
                     String ans = ((RadioButton) itemView.findViewById(id)).getText().toString();
                     questionModel.setGivenAnswer(ans);
                 }
-            });
+            });*/
         }
     }
 
@@ -143,7 +172,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
 
             ButterKnife.bind(this,itemView);
 
-            TF_radioOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            /*TF_radioOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                     QuestionModel questionModel = questionList.get(getAdapterPosition());
@@ -151,7 +180,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
                     String ans = ((RadioButton) itemView.findViewById(id)).getText().toString();
                     questionModel.setGivenAnswer(ans);
                 }
-            });
+            });*/
         }
 
     }

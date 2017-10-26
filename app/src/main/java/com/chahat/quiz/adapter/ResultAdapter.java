@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,10 +38,10 @@ public class ResultAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType) {
             case 0:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.multiple_question, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_multiple, parent, false);
                 return new McTypeViewHolder(view);
             case 1:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tf_question, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_tf, parent, false);
                 return new TF_TypeViewHolder(view);
         }
         return null;
@@ -53,21 +54,52 @@ public class ResultAdapter extends RecyclerView.Adapter {
 
         if (holder.getItemViewType() == 0) {
 
+            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
+                ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_check_black_24dp);
+            }else {
+                ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_clear_black_24dp);
+            }
+
             ((McTypeViewHolder) holder).tvQuestion.setText(questionModel.getQuestion());
-            ((McTypeViewHolder) holder).radioOption1.setText(questionModel.getCorrectAnswer());
-            ((McTypeViewHolder) holder).radioOption1.setChecked(true);
-            ((McTypeViewHolder) holder).radioOption2.setText(questionModel.getIncorrectAnswer()[0]);
-            ((McTypeViewHolder) holder).radioOption3.setText(questionModel.getIncorrectAnswer()[1]);
-            ((McTypeViewHolder) holder).radioOption4.setText(questionModel.getIncorrectAnswer()[2]);
+            ((McTypeViewHolder) holder).radioOption1.setText(questionModel.getOptionList().get(0));
+            ((McTypeViewHolder) holder).radioOption2.setText(questionModel.getOptionList().get(1));
+            ((McTypeViewHolder) holder).radioOption3.setText(questionModel.getOptionList().get(2));
+            ((McTypeViewHolder) holder).radioOption4.setText(questionModel.getOptionList().get(3));
+            ((McTypeViewHolder) holder).tvAnswer.setText(questionModel.getCorrectAnswer());
+
+            if (questionModel.getGivenAnswer()!=null){
+                if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(0))){
+                    ((McTypeViewHolder) holder).radioOption1.setChecked(true);
+                }else if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(1))){
+                    ((McTypeViewHolder) holder).radioOption2.setChecked(true);
+                }else if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(2))){
+                    ((McTypeViewHolder) holder).radioOption3.setChecked(true);
+                }else if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(3))){
+                    ((McTypeViewHolder) holder).radioOption4.setChecked(true);
+                }
+            }
 
         } else {
 
-            ((TF_TypeViewHolder) holder).TF_tvQuestion.setText(questionModel.getQuestion());
-            ((TF_TypeViewHolder) holder).TF_radioOption1.setText(questionModel.getCorrectAnswer());
-            ((TF_TypeViewHolder) holder).TF_radioOption1.setChecked(true);
-            ((TF_TypeViewHolder) holder).TF_radioOption2.setText(questionModel.getIncorrectAnswer()[0]);
-        }
+            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
+                ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_check_black_24dp);
+            }else {
+                ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_clear_black_24dp);
+            }
 
+            ((TF_TypeViewHolder) holder).TF_tvQuestion.setText(questionModel.getQuestion());
+            ((TF_TypeViewHolder) holder).TF_radioOption1.setText(questionModel.getOptionList().get(0));
+            ((TF_TypeViewHolder) holder).TF_radioOption2.setText(questionModel.getOptionList().get(1));
+            ((TF_TypeViewHolder) holder).tvAnswer.setText(questionModel.getCorrectAnswer());
+
+            if (questionModel.getGivenAnswer()!=null){
+                if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(0))){
+                    ((TF_TypeViewHolder) holder).TF_radioOption1.setChecked(true);
+                }else if (questionModel.getGivenAnswer().equals(questionModel.getOptionList().get(1))){
+                    ((TF_TypeViewHolder) holder).TF_radioOption2.setChecked(true);
+                }
+            }
+        }
     }
 
     public void setQuestionList(List<QuestionModel> questionList) {
@@ -112,13 +144,15 @@ public class ResultAdapter extends RecyclerView.Adapter {
         RadioButton radioOption4;
         @BindView(R.id.radioOptions)
         RadioGroup radioGroup;
+        @BindView(R.id.imageView)
+        ImageView imageView;
+        @BindView(R.id.tvAnswer) TextView tvAnswer;
 
         public McTypeViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
 
-            radioGroup.setEnabled(false);
         }
     }
 
@@ -132,13 +166,15 @@ public class ResultAdapter extends RecyclerView.Adapter {
         RadioButton TF_radioOption2;
         @BindView(R.id.radioOptions)
         RadioGroup TF_radioOptions;
+        @BindView(R.id.imageView)
+        ImageView imageViewTF;
+        @BindView(R.id.tvAnswer) TextView tvAnswer;
 
         public TF_TypeViewHolder(final View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
 
-            TF_radioOptions.setEnabled(false);
         }
 
     }
