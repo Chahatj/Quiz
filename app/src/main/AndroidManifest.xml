@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".QuizActivity"></activity>
+        <activity android:name=".QuizActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ResultActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

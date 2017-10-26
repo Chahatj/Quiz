@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,6 +79,22 @@ public class JsonUtils {
                     strings[j] = jsonArray1.optString(j);
                 }
                 questionModel.setIncorrectAnswer(strings);
+
+                List<String> optionList;
+
+                if (questionModel.getType().equals("multiple")){
+                    String[] options = new String[] {questionModel.getCorrectAnswer()
+                            ,questionModel.getIncorrectAnswer()[0],questionModel.getIncorrectAnswer()[1]
+                            ,questionModel.getIncorrectAnswer()[2]};
+                    optionList = Arrays.asList(options);
+                }else {
+                    String[] options = new String[] {questionModel.getCorrectAnswer()
+                            ,questionModel.getIncorrectAnswer()[0]};
+                    optionList = Arrays.asList(options);
+                }
+                Collections.shuffle(optionList);
+
+                questionModel.setOptionList(optionList);
 
                 list.add(questionModel);
             }

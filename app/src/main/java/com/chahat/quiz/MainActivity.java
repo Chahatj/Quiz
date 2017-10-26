@@ -27,10 +27,10 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Category>>,View.OnClickListener {
 
-    @BindView(R.id.spinnerCategory)
-    Spinner spinnerCategory;
+    @BindView(R.id.spinnerCategory) Spinner spinnerCategory;
     private final int LOADER_ID = 1;
     @BindView(R.id.buttonTakeQuiz) Button buttonTakeQuiz;
+    @BindView(R.id.buttonRandomQuiz) Button buttonRandomQuiz;
     @BindView(R.id.editTextQuestion) EditText editTextQuestion;
     @BindView(R.id.spinnerDifficulty) Spinner spinnerDifficulty;
     @BindView(R.id.spinnerType) Spinner spinnerType;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
 
         buttonTakeQuiz.setOnClickListener(this);
+        buttonRandomQuiz.setOnClickListener(this);
 
         getSupportLoaderManager().initLoader(LOADER_ID,null,this);
     }
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<List<Category>> loader, List<Category> data) {
         ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(this,android.R.layout.simple_spinner_dropdown_item,data);
         spinnerCategory.setAdapter(adapter);
+        buttonTakeQuiz.setEnabled(true);
     }
 
     @Override
@@ -109,7 +111,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.buttonTakeQuiz:
                 checkData();
                 break;
+            case R.id.buttonRandomQuiz:
+                generateRandomQuiz();
+                break;
         }
+    }
+
+    private void generateRandomQuiz(){
+
+        QuizModel quizModel = new QuizModel();
+        quizModel.setNumQuestion(10);
+        quizModel.setCategory(-1);
+        quizModel.setDifficulty(null);
+        quizModel.setType(null);
+
+        goToQuizActivity(quizModel);
+
     }
 
     private void checkData(){
@@ -139,12 +156,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 quizModel.setType(type);
             }
 
-            Intent intent = new Intent(this,QuizActivity.class);
-            intent.putExtra("QuizModel",quizModel);
-            startActivity(intent);
+            goToQuizActivity(quizModel);
 
         }else {
             editTextQuestion.setError("required");
         }
+    }
+
+    private void goToQuizActivity(QuizModel quizModel){
+        Intent intent = new Intent(this,QuizActivity.class);
+        intent.putExtra("QuizModel",quizModel);
+        startActivity(intent);
     }
 }

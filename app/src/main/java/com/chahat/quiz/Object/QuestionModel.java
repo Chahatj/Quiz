@@ -1,12 +1,13 @@
 package com.chahat.quiz.Object;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by chahat on 26/10/17.
  */
 
-public class QuestionModel {
+public class QuestionModel implements Serializable {
 
     private int id;
     private String category;
@@ -16,6 +17,15 @@ public class QuestionModel {
     private String correctAnswer;
     private String[] incorrectAnswer;
     private String givenAnswer = null;
+    private List<String> optionList;
+
+    public List<String> getOptionList() {
+        return optionList;
+    }
+
+    public void setOptionList(List<String> optionList) {
+        this.optionList = optionList;
+    }
 
     public String getGivenAnswer() {
         return givenAnswer;
@@ -24,6 +34,8 @@ public class QuestionModel {
     public void setGivenAnswer(String givenAnswer) {
         this.givenAnswer = givenAnswer;
     }
+
+
 
     public int getId() {
         return id;

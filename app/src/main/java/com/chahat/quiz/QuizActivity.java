@@ -1,5 +1,7 @@
 package com.chahat.quiz;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -20,7 +22,9 @@ import com.chahat.quiz.utils.JsonUtils;
 import com.chahat.quiz.utils.NetworkUtils;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +34,6 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private QuizModel quizModel;
     private final int LOADER_ID = 2;
-    URL url;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.buttonSubmit) Button buttonSubmit;
     private QuestionAdapter questionAdapter;
@@ -44,8 +47,7 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
         buttonSubmit.setOnClickListener(this);
 
         quizModel = (QuizModel) getIntent().getSerializableExtra("QuizModel");
-        url = NetworkUtils.builtURLQuiz(quizModel.getNumQuestion(),
-                quizModel.getCategory(),quizModel.getDifficulty(),quizModel.getType());
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -91,6 +93,8 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
                 try {
+                    URL url = NetworkUtils.builtURLQuiz(quizModel.getNumQuestion(),
+                            quizModel.getCategory(),quizModel.getDifficulty(),quizModel.getType());
                     String response = NetworkUtils.getResponseFromHttpURL(url);
                     return JsonUtils.getAllQuestion(response);
                 } catch (IOException e) {
@@ -116,15 +120,9 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onClick(View view) {
 
         List<QuestionModel> questionList = questionAdapter.getQuestionList();
-        int correctAnswer=0;
-
-        for (int i=0;i<questionList.size();i++){
-
-            QuestionModel questionModel = questionList.get(i);
-
-            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
-                correctAnswer = correctAnswer + 1;
-            }
-        }
+        Intent intent = new Intent(this,ResultActivity.class);
+        intent.putExtra("QuestionList", (Serializable) questionList);
+        startActivity(intent);
+        finish();
      }
 }

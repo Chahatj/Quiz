@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context="com.chahat.quiz.QuizActivity">
 
@@ -17,14 +16,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_gravity="bottom">
 
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:text="Submit"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            android:background="@drawable/rounded_button"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
 
