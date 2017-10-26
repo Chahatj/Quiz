@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="3dp"
+        app:elevation="2dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/TF_tvQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="kkdjfkdsjk"
+                android:textColor="@android:color/black"/>
+
+            <RadioGroup
+                android:id="@+id/radioOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <RadioButton
+                    android:id="@+id/TF_radioOption1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/TF_radioOption2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
