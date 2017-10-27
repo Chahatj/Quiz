@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:text="Sorry, No question found"
+            android:text="@string/sorry_no_question_found"
             android:gravity="center"
             android:textStyle="bold"
             android:textSize="16sp"/>
@@ -57,7 +57,7 @@
             android:id="@+id/buttonSubmit"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:layout_margin="10dp"
             android:textAllCaps="false"
             android:background="@drawable/rounded_button"

@@ -1,7 +1,5 @@
 package com.chahat.quiz.utils;
 
-import android.util.Log;
-
 import com.chahat.quiz.Object.Category;
 import com.chahat.quiz.Object.QuestionModel;
 

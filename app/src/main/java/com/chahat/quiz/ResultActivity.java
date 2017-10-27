@@ -1,8 +1,5 @@
 package com.chahat.quiz;
 
-import android.content.Intent;
-import android.os.Parcelable;
-import android.preference.ListPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +11,7 @@ import android.widget.TextView;
 import com.chahat.quiz.Object.QuestionModel;
 import com.chahat.quiz.adapter.ResultAdapter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

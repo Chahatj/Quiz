@@ -1,7 +1,6 @@
 package com.chahat.quiz.adapter;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +24,8 @@ import butterknife.ButterKnife;
 
 public class ResultAdapter extends RecyclerView.Adapter {
 
-    List<QuestionModel> questionList;
-    Context context;
+    private List<QuestionModel> questionList;
+    private Context context;
 
     public ResultAdapter(Context context, List<QuestionModel> questionList) {
         this.context = context;

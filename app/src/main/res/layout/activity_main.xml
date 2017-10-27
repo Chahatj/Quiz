@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No. of Questions"
+                android:text="@string/no_of_questions"
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"
                 android:focusable="true"
@@ -46,7 +46,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select Category"
+                    android:text="@string/select_category"
                     android:textStyle="bold"/>
 
                 <ProgressBar
@@ -72,7 +72,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Difficulty"
+                android:text="@string/select_difficulty"
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"/>
 
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Type"
+                android:text="@string/select_type"
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"/>
 
@@ -114,7 +114,7 @@
             android:id="@+id/buttonRandomQuiz"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Random Quiz"
+            android:text="@string/random_quiz"
             android:textAllCaps="false"
             android:layout_margin="10dp"
             android:padding="5dp"
@@ -130,7 +130,7 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:background="@drawable/rounded_button"
-            android:text="Take Quiz"
+            android:text="@string/take_quiz"
             android:textAllCaps="false"
             android:layout_alignParentEnd="true"
             android:enabled="false"
