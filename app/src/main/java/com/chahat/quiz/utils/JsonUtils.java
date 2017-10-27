@@ -39,7 +39,6 @@ public class JsonUtils {
                 category.setName(name);
                 list.add(category);
             }
-
             return list;
 
         } catch (JSONException e) {
