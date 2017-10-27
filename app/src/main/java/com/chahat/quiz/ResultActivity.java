@@ -1,11 +1,14 @@
 package com.chahat.quiz;
 
+import android.content.Intent;
 import android.os.Parcelable;
 import android.preference.ListPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.chahat.quiz.Object.QuestionModel;
@@ -19,7 +22,7 @@ import java.util.StringTokenizer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.tvResult)
     TextView tvResult;
@@ -27,12 +30,16 @@ public class ResultActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.tvAttempt) TextView tvAttempt;
     private List<QuestionModel> questionList;
+    @BindView(R.id.buttonFinish)
+    Button buttonFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
+
+        buttonFinish.setOnClickListener(this);
 
         questionList = getIntent().getExtras().getParcelableArrayList("QuestionList");
 
@@ -64,4 +71,8 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        finish();
+    }
 }
