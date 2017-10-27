@@ -1,6 +1,7 @@
 package com.chahat.quiz;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -32,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class QuizActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<QuestionModel>> ,View.OnClickListener{
+public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
     private QuizModel quizModel;
     private final int LOADER_ID = 2;
@@ -43,6 +44,9 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
     private QuestionAdapter questionAdapter;
     @BindView(R.id.emptyView)
     LinearLayout emptyView;
+    private final String SAVE_LIST = "saveList";
+    private final String SAVE_RECYLER_STATE = "saveRecyclerState";
+    private Parcelable mRecyclerState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,75 +65,56 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
         questionAdapter = new QuestionAdapter(this,null);
         recyclerView.setAdapter(questionAdapter);
 
-        getSupportLoaderManager().initLoader(LOADER_ID,null,this);
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
-    }
-
-    @Override
-    public Loader<List<QuestionModel>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<List<QuestionModel>>(this) {
-
-            List<QuestionModel> mList = null;
-
-            @Override
-            protected void onStartLoading() {
-                super.onStartLoading();
-                if(mList!=null){
-                    deliverResult(mList);
-                }else {
-                    forceLoad();
-                    showProgress();
-                }
-            }
-
-            @Override
-            public void deliverResult(List<QuestionModel> data) {
-                mList = data;
-                super.deliverResult(data);
-            }
-
-            @Override
-            public List<QuestionModel> loadInBackground() {
-
-                try {
-                    URL url = NetworkUtils.builtURLQuiz(quizModel.getNumQuestion(),
-                            quizModel.getCategory(),quizModel.getDifficulty(),quizModel.getType());
-                    String response = NetworkUtils.getResponseFromHttpURL(url);
-                    return JsonUtils.getAllQuestion(response);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-
-            }
-        };
-    }
-
-    @Override
-    public void onLoadFinished(Loader<List<QuestionModel>> loader, List<QuestionModel> data) {
-        if (data!=null && data.size()>0){
-            questionAdapter.setQuestionList(data);
-            showData();
+        if (savedInstanceState==null){
+            new FetchQuestion().execute();
         }else {
-            showEmptyView();
+            List<QuestionModel> list = savedInstanceState.getParcelableArrayList(SAVE_LIST);
+            questionAdapter.setQuestionList(list);
+            showData();
+            mRecyclerState = savedInstanceState.getParcelable(SAVE_RECYLER_STATE);
+            recyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerState);
         }
+
     }
 
     @Override
-    public void onLoaderReset(Loader<List<QuestionModel>> loader) {
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mRecyclerState = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(SAVE_RECYLER_STATE,mRecyclerState);
+        outState.putParcelableArrayList(SAVE_LIST, (ArrayList<? extends Parcelable>) questionAdapter.getQuestionList());
+    }
 
+    public class FetchQuestion extends AsyncTask<Void,Void,List<QuestionModel>>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress();
+        }
+
+        @Override
+        protected List<QuestionModel> doInBackground(Void... voids) {
+            try {
+                URL url = NetworkUtils.builtURLQuiz(quizModel.getNumQuestion(),
+                        quizModel.getCategory(),quizModel.getDifficulty(),quizModel.getType());
+                String response = NetworkUtils.getResponseFromHttpURL(url);
+                return JsonUtils.getAllQuestion(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(List<QuestionModel> questionModels) {
+            if (questionModels!=null && questionModels.size()>0){
+                questionAdapter.setQuestionList(questionModels);
+                showData();
+            }else {
+                showEmptyView();
+            }
+        }
     }
 
     @Override
@@ -137,7 +122,9 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
 
         List<QuestionModel> questionList = questionAdapter.getQuestionList();
         Intent intent = new Intent(this,ResultActivity.class);
-        intent.putExtra("QuestionList", (Serializable) questionList);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("QuestionList", (ArrayList<? extends Parcelable>) questionList);
+        intent.putExtras(bundle);
         startActivity(intent);
         finish();
      }

@@ -1,5 +1,8 @@
 package com.chahat.quiz.Object;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
  * Created by chahat on 26/10/17.
  */
 
-public class QuestionModel implements Serializable {
+public class QuestionModel implements Parcelable{
 
     private int id;
     private String category;
@@ -20,6 +23,35 @@ public class QuestionModel implements Serializable {
     private List<String> optionList;
 
     private int checkedId= -1;
+
+    public QuestionModel(){
+
+    }
+
+    protected QuestionModel(Parcel in) {
+        id = in.readInt();
+        category = in.readString();
+        type = in.readString();
+        difficulty = in.readString();
+        question = in.readString();
+        correctAnswer = in.readString();
+        incorrectAnswer = in.createStringArray();
+        givenAnswer = in.readString();
+        optionList = in.createStringArrayList();
+        checkedId = in.readInt();
+    }
+
+    public static final Creator<QuestionModel> CREATOR = new Creator<QuestionModel>() {
+        @Override
+        public QuestionModel createFromParcel(Parcel in) {
+            return new QuestionModel(in);
+        }
+
+        @Override
+        public QuestionModel[] newArray(int size) {
+            return new QuestionModel[size];
+        }
+    };
 
     public int getCheckedId() {
         return checkedId;
@@ -101,5 +133,24 @@ public class QuestionModel implements Serializable {
 
     public void setIncorrectAnswer(String[] incorrectAnswer) {
         this.incorrectAnswer = incorrectAnswer;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(category);
+        parcel.writeString(type);
+        parcel.writeString(difficulty);
+        parcel.writeString(question);
+        parcel.writeString(correctAnswer);
+        parcel.writeStringArray(incorrectAnswer);
+        parcel.writeString(givenAnswer);
+        parcel.writeStringList(optionList);
+        parcel.writeInt(checkedId);
     }
 }

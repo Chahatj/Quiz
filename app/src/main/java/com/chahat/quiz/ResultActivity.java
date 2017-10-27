@@ -1,6 +1,7 @@
 package com.chahat.quiz;
 
 import android.os.Parcelable;
+import android.preference.ListPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.chahat.quiz.Object.QuestionModel;
 import com.chahat.quiz.adapter.ResultAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -25,8 +27,6 @@ public class ResultActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.tvAttempt) TextView tvAttempt;
     private List<QuestionModel> questionList;
-    private Parcelable mRecyclerState;
-    private final String SAVEINSTANCE_RECYCLERSTATE = "saveState";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         ButterKnife.bind(this);
 
-        questionList = (List<QuestionModel>) getIntent().getSerializableExtra("QuestionList");
+        questionList = getIntent().getExtras().getParcelableArrayList("QuestionList");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

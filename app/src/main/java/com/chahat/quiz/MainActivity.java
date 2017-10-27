@@ -1,6 +1,7 @@
 package com.chahat.quiz;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -26,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Category>>,View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,LoaderManager.LoaderCallbacks<List<Category>> {
 
     @BindView(R.id.spinnerCategory) Spinner spinnerCategory;
     private final int LOADER_ID = 1;
@@ -47,17 +48,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         buttonRandomQuiz.setOnClickListener(this);
 
         getSupportLoaderManager().initLoader(LOADER_ID,null,this);
+
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
-    }
+
 
     @Override
     public Loader<List<Category>> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<List<Category>>(this) {
+
 
             List<Category> mList = null;
 
@@ -68,36 +67,44 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     deliverResult(mList);
                 }else {
                     forceLoad();
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void deliverResult(List<Category> data) {
-                super.deliverResult(data);
                 mList = data;
+                super.deliverResult(data);
             }
+
 
             @Override
             public List<Category> loadInBackground() {
                 URL url = NetworkUtils.builtURLCategory();
                 try {
                     String response = NetworkUtils.getResponseFromHttpURL(url);
-                    return JsonUtils.getAllCategory(response);
+                    if (response!=null){
+                        return JsonUtils.getAllCategory(response);
+                    }else {
+                        return null;
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
-
             }
         };
     }
 
     @Override
     public void onLoadFinished(Loader<List<Category>> loader, List<Category> data) {
-        ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(this,android.R.layout.simple_spinner_dropdown_item,data);
-        spinnerCategory.setAdapter(adapter);
-        buttonTakeQuiz.setEnabled(true);
-        progressBar.setVisibility(View.GONE);
+        if (data!=null && data.size()>0){
+            ArrayAdapter<Category> adapter = new ArrayAdapter<Category>(this,android.R.layout.simple_spinner_dropdown_item,data);
+            spinnerCategory.setAdapter(adapter);
+            buttonTakeQuiz.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
