@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activityLayout"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.chahat.quiz.QuizActivity">
 
@@ -36,6 +37,7 @@
             android:src="@drawable/ic_sentiment_neutral_black_24dp"/>
 
         <TextView
+            android:id="@+id/textViewError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
@@ -52,7 +54,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
-        android:visibility="gone">
+        >
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"/>
 
         <Button
             android:id="@+id/buttonSubmit"

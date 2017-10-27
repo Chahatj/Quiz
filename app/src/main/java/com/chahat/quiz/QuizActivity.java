@@ -1,22 +1,27 @@
 package com.chahat.quiz;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chahat.quiz.Object.QuestionModel;
 import com.chahat.quiz.Object.QuizModel;
 import com.chahat.quiz.adapter.QuestionAdapter;
 import com.chahat.quiz.utils.JsonUtils;
+import com.chahat.quiz.utils.NetworkConnection;
 import com.chahat.quiz.utils.NetworkUtils;
 
 import java.io.IOException;
@@ -42,6 +47,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Parcelable mRecyclerState;
     @BindView(R.id.rl)
     RelativeLayout submitLayout;
+    @BindView(R.id.activityLayout) RelativeLayout activityLayout;
+    @BindView(R.id.textViewError)
+    TextView textViewError;
+    @BindView(R.id.imageViewBack)
+    ImageView imageViewBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +60,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         ButterKnife.bind(this);
 
         buttonSubmit.setOnClickListener(this);
+        imageViewBack.setOnClickListener(this);
 
         quizModel = (QuizModel) getIntent().getSerializableExtra("QuizModel");
 
@@ -61,7 +72,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setAdapter(questionAdapter);
 
         if (savedInstanceState==null){
-            new FetchQuestion().execute();
+            fetchQuestion();
         }else {
             List<QuestionModel> list = savedInstanceState.getParcelableArrayList(SAVE_LIST);
             questionAdapter.setQuestionList(list);
@@ -70,6 +81,30 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             recyclerView.getLayoutManager().onRestoreInstanceState(mRecyclerState);
         }
 
+    }
+
+    private void fetchQuestion(){
+        if (NetworkConnection.isNetworkAvailable(this)){
+            new FetchQuestion().execute();
+        }else {
+            showSnackbar();
+            showEmptyView(getString(R.string.sorry_no_internet));
+        }
+    }
+
+    private void showSnackbar(){
+        final Snackbar snackbar = Snackbar
+                .make(activityLayout, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fetchQuestion();
+                        view.setVisibility(View.GONE);
+                    }
+                });
+
+        snackbar.setActionTextColor(Color.RED);
+        snackbar.show();
     }
 
     @Override
@@ -107,7 +142,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 questionAdapter.setQuestionList(questionModels);
                 showData();
             }else {
-                showEmptyView();
+                showEmptyView(getString(R.string.sorry_no_question_found));
             }
         }
     }
@@ -115,13 +150,24 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        List<QuestionModel> questionList = questionAdapter.getQuestionList();
-        Intent intent = new Intent(this,ResultActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("QuestionList", (ArrayList<? extends Parcelable>) questionList);
-        intent.putExtras(bundle);
-        startActivity(intent);
-        finish();
+        int id = view.getId();
+
+        switch (id){
+            case R.id.imageViewBack:
+                onBackPressed();
+                break;
+            case R.id.buttonSubmit:
+                List<QuestionModel> questionList = questionAdapter.getQuestionList();
+                Intent intent = new Intent(this,ResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("QuestionList", (ArrayList<? extends Parcelable>) questionList);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
+                break;
+        }
+
+
      }
 
      private void showProgress(){
@@ -138,10 +184,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
          emptyView.setVisibility(View.GONE);
      }
 
-     private void showEmptyView(){
+     private void showEmptyView(String error){
          progressBar.setVisibility(View.GONE);
          recyclerView.setVisibility(View.GONE);
          submitLayout.setVisibility(View.INVISIBLE);
          emptyView.setVisibility(View.VISIBLE);
+         textViewError.setText(error);
      }
 }
