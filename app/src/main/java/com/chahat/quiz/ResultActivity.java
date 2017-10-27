@@ -12,6 +12,7 @@ import com.chahat.quiz.adapter.ResultAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,10 @@ public class ResultActivity extends AppCompatActivity {
     TextView tvResult;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.tvAttempt) TextView tvAttempt;
     private List<QuestionModel> questionList;
+    private Parcelable mRecyclerState;
+    private final String SAVEINSTANCE_RECYCLERSTATE = "saveState";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +42,26 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
 
         int correctAnswer = 0;
+        int attempt =0;
 
         for (int i=0;i<questionList.size();i++){
 
             QuestionModel questionModel = questionList.get(i);
-            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
-                correctAnswer += 1;
+            if (questionModel.getGivenAnswer()!=null){
+                if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
+                    correctAnswer += 1;
+                }
+                attempt +=1;
             }
+
         }
 
         tvResult.setText(correctAnswer+"/"+questionList.size());
+        tvAttempt.setText(String.valueOf(attempt));
 
         ResultAdapter resultAdapter = new ResultAdapter(this,questionList);
         recyclerView.setAdapter(resultAdapter);
 
     }
+
 }

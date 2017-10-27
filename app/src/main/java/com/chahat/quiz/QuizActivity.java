@@ -72,6 +72,12 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(LOADER_ID,null,this);
+    }
+
+    @Override
     public Loader<List<QuestionModel>> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<List<QuestionModel>>(this) {
 
@@ -80,24 +86,22 @@ public class QuizActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             protected void onStartLoading() {
                 super.onStartLoading();
-                showProgress();
                 if(mList!=null){
                     deliverResult(mList);
                 }else {
                     forceLoad();
+                    showProgress();
                 }
             }
 
             @Override
             public void deliverResult(List<QuestionModel> data) {
-                super.deliverResult(data);
                 mList = data;
+                super.deliverResult(data);
             }
 
             @Override
             public List<QuestionModel> loadInBackground() {
-
-
 
                 try {
                     URL url = NetworkUtils.builtURLQuiz(quizModel.getNumQuestion(),

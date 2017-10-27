@@ -50,7 +50,7 @@ public class QuestionAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         final QuestionModel questionModel = questionList.get(position);
 
@@ -66,15 +66,18 @@ public class QuestionAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                     questionModel.setCheckedId(radioGroup.getCheckedRadioButtonId());
+                    if (questionModel.getCheckedId()!=-1){
+                        String ans = ((RadioButton) holder.itemView.findViewById(((McTypeViewHolder) holder).radioGroup.getCheckedRadioButtonId())).getText().toString();
+                        questionModel.setGivenAnswer(ans);
+                    }else {
+                        questionModel.setGivenAnswer(null);
+                    }
                 }
             });
 
             ((McTypeViewHolder) holder).radioGroup.check(questionModel.getCheckedId());
 
-            if (questionModel.getCheckedId()!=-1){
-                String ans = ((RadioButton) holder.itemView.findViewById(((McTypeViewHolder) holder).radioGroup.getCheckedRadioButtonId())).getText().toString();
-                questionModel.setGivenAnswer(ans);
-            }
+
 
 
         }else {
@@ -87,14 +90,17 @@ public class QuestionAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                     questionModel.setCheckedId(radioGroup.getCheckedRadioButtonId());
+                    if (questionModel.getCheckedId()!=-1){
+                        String ans = ((RadioButton) holder.itemView.findViewById(((TF_TypeViewHolder) holder).TF_radioOptions.getCheckedRadioButtonId())).getText().toString();
+                        questionModel.setGivenAnswer(ans);
+                    }else {
+                        questionModel.setGivenAnswer(null);
+                    }
                 }
             });
             ((TF_TypeViewHolder)holder).TF_radioOptions.check(questionModel.getCheckedId());
 
-            if (questionModel.getCheckedId()!=-1){
-                String ans = ((RadioButton) holder.itemView.findViewById(((TF_TypeViewHolder) holder).TF_radioOptions.getCheckedRadioButtonId())).getText().toString();
-                questionModel.setGivenAnswer(ans);
-            }
+
 
         }
 

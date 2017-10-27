@@ -54,11 +54,16 @@ public class ResultAdapter extends RecyclerView.Adapter {
 
         if (holder.getItemViewType() == 0) {
 
-            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
-                ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_check_black_24dp);
+            if (questionModel.getGivenAnswer()!=null){
+                if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
+                    ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_check_black_24dp);
+                }else {
+                    ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_clear_black_24dp);
+                }
             }else {
-                ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_clear_black_24dp);
+                ((McTypeViewHolder) holder).imageView.setImageResource(R.drawable.ic_remove_black_24dp);
             }
+
 
             ((McTypeViewHolder) holder).tvQuestion.setText(questionModel.getQuestion());
             ((McTypeViewHolder) holder).radioOption1.setText(questionModel.getOptionList().get(0));
@@ -81,11 +86,17 @@ public class ResultAdapter extends RecyclerView.Adapter {
 
         } else {
 
-            if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
-                ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_check_black_24dp);
+
+            if (questionModel.getGivenAnswer()!=null){
+                if (questionModel.getCorrectAnswer().equals(questionModel.getGivenAnswer())){
+                    ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_check_black_24dp);
+                }else {
+                    ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_clear_black_24dp);
+                }
             }else {
-                ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_clear_black_24dp);
+                ((TF_TypeViewHolder) holder).imageViewTF.setImageResource(R.drawable.ic_remove_black_24dp);
             }
+
 
             ((TF_TypeViewHolder) holder).TF_tvQuestion.setText(questionModel.getQuestion());
             ((TF_TypeViewHolder) holder).TF_radioOption1.setText(questionModel.getOptionList().get(0));
