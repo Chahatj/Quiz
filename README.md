@@ -1,5 +1,7 @@
 # RapidQ
 
+Get it on playstore: https://play.google.com/store/apps/details?id=com.chahat.quiz
+
 Knowledge is power. Test your Knowledge!
 
 RapidQ is the ultimate trivia quiz. There are questions about General knowledge, History, Geography, Sports, mythology, celebrities and so on. There are questions for everyone!
