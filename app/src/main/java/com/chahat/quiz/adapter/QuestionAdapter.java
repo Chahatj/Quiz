@@ -150,16 +150,6 @@ public class QuestionAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-
-            /*radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                    QuestionModel questionModel = questionList.get(getAdapterPosition());
-                    int id = radioGroup.getCheckedRadioButtonId();
-                    String ans = ((RadioButton) itemView.findViewById(id)).getText().toString();
-                    questionModel.setGivenAnswer(ans);
-                }
-            });*/
         }
     }
 
@@ -174,16 +164,6 @@ public class QuestionAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-
-            /*TF_radioOptions.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                    QuestionModel questionModel = questionList.get(getAdapterPosition());
-                    int id = TF_radioOptions.getCheckedRadioButtonId();
-                    String ans = ((RadioButton) itemView.findViewById(id)).getText().toString();
-                    questionModel.setGivenAnswer(ans);
-                }
-            });*/
         }
 
     }

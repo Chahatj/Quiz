@@ -63,7 +63,6 @@ public class NetworkUtils {
                 e.printStackTrace();
             }
 
-        Log.d("NetworkUtils",url.toString());
         return url;
 
     }

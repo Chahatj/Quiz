@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.chahat.quiz.Object.QuestionModel;
 import com.chahat.quiz.Object.QuizModel;
@@ -29,7 +30,6 @@ import butterknife.ButterKnife;
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener{
 
     private QuizModel quizModel;
-    private final int LOADER_ID = 2;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.buttonSubmit) Button buttonSubmit;
     @BindView(R.id.progressBar)
@@ -40,6 +40,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private final String SAVE_LIST = "saveList";
     private final String SAVE_RECYLER_STATE = "saveRecyclerState";
     private Parcelable mRecyclerState;
+    @BindView(R.id.rl)
+    RelativeLayout submitLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,21 +127,21 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
      private void showProgress(){
          progressBar.setVisibility(View.VISIBLE);
          recyclerView.setVisibility(View.INVISIBLE);
-         buttonSubmit.setEnabled(false);
+         submitLayout.setVisibility(View.INVISIBLE);
          emptyView.setVisibility(View.GONE);
      }
 
      private void showData(){
          progressBar.setVisibility(View.GONE);
          recyclerView.setVisibility(View.VISIBLE);
-         buttonSubmit.setEnabled(true);
+         submitLayout.setVisibility(View.VISIBLE);
          emptyView.setVisibility(View.GONE);
      }
 
      private void showEmptyView(){
          progressBar.setVisibility(View.GONE);
          recyclerView.setVisibility(View.GONE);
-         buttonSubmit.setEnabled(false);
+         submitLayout.setVisibility(View.INVISIBLE);
          emptyView.setVisibility(View.VISIBLE);
      }
 }

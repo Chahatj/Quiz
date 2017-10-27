@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Quiz</string>
+    <string name="app_name">RapidQ</string>
     <string name="no_of_questions">No. of Questions</string>
     <string name="select_category">Select Category</string>
     <string name="select_difficulty">Select Difficulty</string>
     <string name="select_type">Select Type</string>
     <string name="random_quiz">Random Quiz</string>
     <string name="take_quiz">Take Quiz</string>
-    <string name="sorry_no_question_found">Sorry, No question found</string>
+    <string name="sorry_no_question_found">Sorry, Enter less number of question</string>
     <string name="submit">Submit</string>
     <string name="correct_answers">Correct Answers:</string>
     <string name="attempted">Attempted:</string>
